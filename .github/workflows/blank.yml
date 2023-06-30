@@ -65,10 +65,14 @@ jobs:
         env:
           TYPE: ${{ inputs.updateType }}
 
-      - name: Get new version
+      # - name: Build
+      #   run: |
+      #     python setup.py sdist --format=zip
+
+      - name: Set Tag
         run: |
           echo "TAG_NAME=v$(cat samples/VERSION)" >> $GITHUB_ENV
-          
+
       - name: Commit version file
         run: |
           git config user.name github-actions[bot]
@@ -77,9 +81,9 @@ jobs:
           git add **/VERSION
           git commit -m "Release $TAG_NAME"
           git push
-        
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: samples/VERSION
+          files: dist/
           tag_name: ${{ env.TAG_NAME }}

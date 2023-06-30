@@ -76,12 +76,10 @@ jobs:
 
           git add **/VERSION
           git commit -m "Release $TAG_NAME"
-
+          git push
+        
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: samples/VERSION
           tag_name: ${{ env.TAG_NAME }}
-
-      - name: Push change
-        run: git push

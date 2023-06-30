@@ -2,6 +2,11 @@
 
 name: CI
 
+env:
+  MAJOR: major
+  MINOR: minor
+  PATCH: patch
+
 # Controls when the workflow will run
 on:
   # Allows you to run this workflow manually from the Actions tab
@@ -13,9 +18,9 @@ on:
         default: 'patch'
         type: choice
         options:
-        - major
-        - miner
-        - patch
+        - $MAJOR
+        - $MINOR
+        - $PATCH
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -31,7 +36,6 @@ jobs:
       
       - name: Update Version
         run: |
-          pwd
           cd samples
           # ファイルからバージョンを読み取る
           version=$(cat VERSION)
@@ -39,35 +43,36 @@ jobs:
           # バージョンをドットで分割して配列に格納する
           IFS='.' read -ra VERSION <<< "$version"
 
+          echo "Update type: $TYPE"
+          
           # 引数によって対応するバージョン番号を増加させる
           case $TYPE in
-            "major")
+            $MAJOR)
               ((VERSION[0]++))
               VERSION[1]=0
               VERSION[2]=0
               ;;
-            "minor")
+            $MINOR)
               ((VERSION[1]++))
               VERSION[2]=0
               ;;
-            "patch")
+            $PATCH)
               ((VERSION[2]++))
               ;;
             *)
               echo "Unknown argument: $1"
-              echo "Please use one of the following arguments: major, minor, patch"
+              echo "Please use one of the following arguments: $MAJOR, $MINOR, $PATCH"
               exit 1
           esac
           
           # バージョンを更新してファイルに書き込む
           echo "${VERSION[0]}.${VERSION[1]}.${VERSION[2]}" > VERSION
+        env:
+          TYPE: ${{ inputs.updateType }}
 
       - name: Run a one-line script
         run: |
-          echo "Update type: $TYPE"
           echo "TAG_NAME=$(cat samples/VERSION)" >> $GITHUB_ENV
-        env:
-          TYPE: ${{ inputs.updateType }}
           
       - name: Run a one-line script
         run: |

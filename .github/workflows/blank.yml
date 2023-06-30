@@ -32,7 +32,7 @@ jobs:
       - name: Update Version
         run: |
           pwd
-          cd smaples
+          cd samples
           # ファイルからバージョンを読み取る
           version=$(cat VERSION)
 

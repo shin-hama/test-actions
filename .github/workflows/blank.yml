@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       updateType:
-        description: 'Update type'
+        description: 'Update type. "major", "minor", or "patch"'
         required: true
         default: 'patch'
         type: choice
@@ -84,6 +84,15 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v1
+        id: release
+        continue-on-error: true
         with:
           files: dist/*.zip
-          tag_name: ${{ env.TAG_NAME }}
+          tag: ${{ env.TAG_NAME }}
+
+      - name: Error handling
+        if: ${{ steps.release.outcome == 'failure' }}
+        run: |
+          echo "Rollback commit"
+          git reset --hard HEAD^
+          git push -f

@@ -53,7 +53,9 @@ jobs:
               VERSION[2]=0
               ;;
             "patch")
+              echo "Patch update"
               ((VERSION[2]++))
+              echo "${VERSION[2]}"
               ;;
             *)
               echo "Unknown argument: $TYPE"

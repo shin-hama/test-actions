@@ -28,7 +28,7 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-      
+
       - name: Update Version
         run: |
           cd samples
@@ -39,7 +39,8 @@ jobs:
           IFS='.' read -ra VERSION <<< "$version"
 
           echo "Update type: $TYPE"
-          
+          echo "Current Version: ${VERSION[0]}.${VERSION[1]}.${VERSION[2]}"
+
           # 引数によって対応するバージョン番号を増加させる
           case $TYPE in
             "major")
@@ -59,9 +60,9 @@ jobs:
               echo "Please use one of the following arguments: major, minor, patch"
               exit 1
           esac
-          
+
           echo "${VERSION[0]}.${VERSION[1]}.${VERSION[2]}"
-          
+
           # バージョンを更新してファイルに書き込む
           echo "${VERSION[0]}.${VERSION[1]}.${VERSION[2]}" > VERSION
         env:
@@ -70,11 +71,11 @@ jobs:
       - name: Run a one-line script
         run: |
           echo "TAG_NAME=$(cat samples/VERSION)" >> $GITHUB_ENV
-          
+
       - name: Run a one-line script
         run: |
           echo "New Tag: $TAG_NAME"
-      
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:

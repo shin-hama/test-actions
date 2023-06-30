@@ -55,8 +55,8 @@ jobs:
               ((VERSION[2]++))
               ;;
             *)
-              echo "Unknown argument: $1"
-              echo "Please use one of the following arguments: $MAJOR, $MINOR, $PATCH"
+              echo "Unknown argument: $TYPE"
+              echo "Please use one of the following arguments: major, minor, patch"
               exit 1
           esac
           

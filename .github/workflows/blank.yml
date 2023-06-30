@@ -32,10 +32,16 @@ jobs:
       - name: Run a one-line script
         run: |
           echo "Update type: $TYPE"
+          echo "TAG_NAME=$(cat samples/VERSION)" >> $GITHUB_ENV
         env:
           TYPE: ${{ inputs.updateType }}
-
+          
+      - name: Run a one-line script
+        run: |
+          echo "New Tag: $TAG_NAME"
+      
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: sample/VERSION
+          tag: $TAG_NAME

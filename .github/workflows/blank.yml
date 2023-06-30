@@ -17,6 +17,9 @@ on:
           - 'minor'
           - 'patch'
 
+env:
+  VERSION_FILE: samples/VERSION
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
@@ -31,9 +34,8 @@ jobs:
 
       - name: Update Version
         run: |
-          cd samples
           # ファイルからバージョンを読み取る
-          version=$(cat VERSION)
+          version=$(cat ${{ env.VERSION_FILE }})
 
           # バージョンをドットで分割して配列に格納する
           IFS='.' read -ra VERSION <<< "$version"
@@ -61,7 +63,7 @@ jobs:
           esac
 
           # バージョンを更新してファイルに書き込む
-          echo "${VERSION[0]}.${VERSION[1]}.${VERSION[2]}" > VERSION
+          echo "${VERSION[0]}.${VERSION[1]}.${VERSION[2]}" > ${{ env.VERSION_FILE }}
         env:
           TYPE: ${{ inputs.updateType }}
 
@@ -71,14 +73,14 @@ jobs:
 
       - name: Set Tag
         run: |
-          echo "TAG_NAME=v$(cat samples/VERSION)" >> $GITHUB_ENV
+          echo "TAG_NAME=v$(cat ${{ env.VERSION_FILE }})" >> $GITHUB_ENV
 
       - name: Commit version file
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
 
-          git add **/VERSION
+          git add ${{ env.VERSION_FILE }}
           git commit -m "Release $TAG_NAME"
           git push
 

@@ -69,13 +69,14 @@ jobs:
         run: |
           echo "TAG_NAME=v$(cat samples/VERSION)" >> $GITHUB_ENV
 
-      - name: Commit version file
-        run: |
-          git add **/VERSION
-          git commit -m "Release $TAG_NAME"
-
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           files: sample/VERSION
           tag_name: $TAG_NAME
+          
+      - name: Commit version file
+        run: |
+          git add **/VERSION
+          git commit -m "Release $TAG_NAME"
+          git push

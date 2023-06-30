@@ -81,7 +81,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: samples/VERSION
-          tag_name: ${{ TAG_NAME }}
+          tag_name: ${{ env.TAG_NAME }}
 
       - name: Push change
         run: git push

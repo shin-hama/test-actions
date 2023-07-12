@@ -22,7 +22,7 @@ jobs:
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         git clone https://github.com/shin-hama/$TARGET.git  # ターゲットリポジトリのURLを記述します
-        mkdir -p TARGET/docs && cp -r docs/*.rst TARGET/docs/  # ビルドしたドキュメントをターゲットリポジトリにコピーします
+        mkdir -p $TARGET/docs && cp -r docs/*.rst $TARGET/docs/  # ビルドしたドキュメントをターゲットリポジトリにコピーします
         cd TARGET
         git add .
         git commit -m "Update docs"

@@ -27,6 +27,6 @@ jobs:
         git add .
         git commit -m "Update docs"
         git remote -v
-        git push https://github.com/shin-hama/$TARGET.git
+        git push https://${{ secrets.GITHUB_TOKEN }}@github.com/shin-hama/$TARGET.git
       env:
         TARGET: "test-actions-target"

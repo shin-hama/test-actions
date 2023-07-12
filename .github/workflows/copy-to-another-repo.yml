@@ -4,6 +4,9 @@ name: copy-to-another-repo
 
 # Controls when the workflow will run
 on:
+  push:
+    paths:
+      - 'docs/*.rst'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 

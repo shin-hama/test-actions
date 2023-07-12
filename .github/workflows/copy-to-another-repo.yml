@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: copy-to-another-repo
 
 # Controls when the workflow will run
 on:
@@ -26,6 +26,7 @@ jobs:
         cd $TARGET
         git add .
         git commit -m "Update docs"
-        git push
+        git remote -v
+        git push https://github.com/shin-hama/$TARGET.git
       env:
         TARGET: "test-actions-target"
